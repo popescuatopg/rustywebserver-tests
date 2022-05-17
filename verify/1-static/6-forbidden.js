@@ -1,4 +1,5 @@
 const http = require ('http');
+const util = require("./../util.js");
 
 http.get({
     hostname: 'localhost',
@@ -7,10 +8,10 @@ http.get({
     agent: false,
     headers:{},
     }, (res) => {
-        console.log (res.statusCode);
-        console.log (res.statusMessage);
-        console.log (res.headers);
+        util.compareHeaders({"connection": "close"}, res.headers);
         res.on ('data', (data) => {
-            console.log (data.toString ('base64'));
+            if (data.toString().trim() !== "<html>404 Not Found</html>") {
+                console.error("Wrong message");
+            }
         })
 });

@@ -1,4 +1,5 @@
 const http = require ('http');
+const util = require("./../util.js");
 
 http.get({
     hostname: 'localhost',
@@ -12,8 +13,10 @@ http.get({
     }, (res) => {
         console.log (res.statusCode);
         console.log (res.statusMessage);
-        console.log (res.headers);
+        util.compareHeaders({"content-type": "text/plain; charset=utf-8"}, res.headers);
         res.on ('data', (data) => {
-            console.log (data.toString ('utf-8'));
+            if (data.toString().trim() !== "Message super message received from a super student") {
+                console.error("Wrong message");
+            }
         });
 });

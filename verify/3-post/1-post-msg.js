@@ -1,11 +1,12 @@
 const http = require ('http');
+const util = require("../util.js");
 
 const text = 'super cool message';
 
 const req = http.request({
     hostname: 'localhost',
     port: 8000,
-    path: '/scripts/read.sh',
+    path: '/scripts/print_post.sh',
     agent: false,
     method: 'POST',
     headers:{
@@ -16,9 +17,11 @@ const req = http.request({
     }, (res) => {
         console.log (res.statusCode);
         console.log (res.statusMessage);
-        console.log (res.headers);
+        util.compareHeaders({"content-type": "text/plain"}, res.headers);
         res.on ('data', (data) => {
-            console.log (data.toString ('utf-8'));
+            if (data.toString().trim() !== text) {
+                console.error("Wrong message");
+            }
         });
 });
 req.write (text);

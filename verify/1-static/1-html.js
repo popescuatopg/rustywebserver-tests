@@ -1,4 +1,5 @@
 const http = require ('http');
+const util = require("./../util.js");
 
 http.get({
     hostname: 'localhost',
@@ -7,8 +8,8 @@ http.get({
     agent: false,
     headers:{},
     }, (res) => {
-        console.log (res.headers);
-        res.on ('data', (data) => {
-            console.log (data.toString ('utf-8'));
-        })
+        util.compareHeaders({"connection": "close", "content-type":"text/html; charset=utf-8"}, res.headers);
+        res.on("data", (data) => {
+            util.compareFile (util.filename("/page.html"), data);
+        });
 });

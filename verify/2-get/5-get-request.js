@@ -1,21 +1,19 @@
+
 const http = require ('http');
 const util = require("./../util.js");
 
 http.get({
     hostname: 'localhost',
     port: 8000,
-    path: '/scripts/fail.sh',
+    path: '/scripts/print_method.sh',
     agent: false,
-    headers:{
-        msg: 'super message',
-        usr: 'a super student'
-    },
+    headers:{},
     }, (res) => {
         console.log (res.statusCode);
         console.log (res.statusMessage);
-        util.compareHeaders({"connection": "close"}, res.headers);
+        util.compareHeaders({"content-type": "text/plain"}, res.headers);
         res.on ('data', (data) => {
-            if (data.toString().trim() !== "<html>500 Internal Server Error</html>") {
+            if (data.toString().trim() !== "GET") {
                 console.error("Wrong message");
             }
         });

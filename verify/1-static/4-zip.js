@@ -1,4 +1,5 @@
 const http = require ('http');
+const util = require("./../util.js");
 
 http.get({
     hostname: 'localhost',
@@ -7,8 +8,8 @@ http.get({
     agent: false,
     headers:{},
     }, (res) => {
-        console.log (res.headers);
+        util.compareHeaders({"connection": "close", "content-type":"application/zip"}, res.headers);
         res.on ('data', (data) => {
-            console.log (data.toString ('base64'));
+            util.compareFile (util.filename("/archive.zip"), data);
         })
 });
