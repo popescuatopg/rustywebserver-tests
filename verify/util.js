@@ -18,20 +18,36 @@ function compareFile(filename, data) {
 }
 
 function compareHeaders(headers, data) {
+    let correct = true;
     let dataheaders = toLowerKeys(data);
     for (let header in headers) {
         if (headers[header] !== dataheaders[header.toLocaleLowerCase()]) {
             console.error(`Header ${header} differs: Yours: "${dataheaders[header.toLocaleLowerCase()]}", correct: "${headers[header]}"`);
-            return false;
+            correct = false;
         }
     }
-    return true;
+    return correct;
 }
 
 function filename(filename) {
     return path.join("public", filename);
 }
 
+function compareStatus (res, code, text) {
+    let correct = true;
+    if (res.statusCode !== code) {
+        console.error(`Incorrect status code, got ${res.statusCode}, expected ${code}`);
+        correct = false;
+    }
+
+    if (res.statusMessage !== text) {
+        console.error(`Incorrect status text, got ${res.statusMessage}, expected ${text}`);
+        correct = false;
+    }
+    return correct;
+}
+
 module.exports.compareFile = compareFile;
 module.exports.compareHeaders = compareHeaders;
+module.exports.compareStatus = compareStatus;
 module.exports.filename = filename;

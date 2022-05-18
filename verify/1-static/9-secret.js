@@ -4,16 +4,25 @@ const util = require("./../util.js");
 http.get({
     hostname: 'localhost',
     port: 8000,
-    path: '/../tests/secret.txt',
+    path: '/../verify/2-get/2-get-fail.js',
     agent: false,
     headers:{},
     }, (res) => {
-        console.log (res.statusCode);
-        console.log (res.statusMessage);
-        util.compareHeaders({"connection": "close"}, res.headers);
+        let correct = true;
+        correct = correct & util.compareStatus(res, 403, "Forbidden");
+        correct = correct & util.compareHeaders({"connection": "close"}, res.headers);
         res.on ('data', (data) => {
-            if (data.toString().trim() !== "<html>404 Not Found</html>") {
+            if (data.toString().trim() !== "<html>403 Not Found</html>") {
                 console.error("Wrong message");
             }
-        })
+            else
+            {
+                correct = false;
+            }
+        });
+        res.on("end", () => {
+            if (!correct) {
+                process.exit(1);
+            }
+        });
 });

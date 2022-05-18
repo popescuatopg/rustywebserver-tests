@@ -1,20 +1,25 @@
-
 const http = require ('http');
+const os = require ('os');
 const util = require("../util.js");
 
-let req = http.request({
+const text = 'super cool message'+os.EOL+'super cool person'
+
+const req = http.request({
     hostname: 'localhost',
     port: 8000,
-    path: '/scripts/print_method.sh',
+    path: '/scripts/test/multiplelines.sh',
     agent: false,
-    method: "POST",
-    headers:{},
+    method: 'POST',
+    headers:{
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Content-length': text.length,
+        }
     }, (res) => {
         let correct = true;
         correct = correct & util.compareStatus(res, 200, "OK");
-        correct = correct & util.compareHeaders({"content-type": "text/plain"}, res.headers);
+        correct = correct & util.compareHeaders({"content-type": "text/html"}, res.headers);
         res.on ('data', (data) => {
-            if (data.toString().trim() !== "POST") {
+            if (data.toString().trim() !== "Message super cool message received from super cool person") {
                 console.error("Wrong message");
             }
             else
@@ -28,6 +33,5 @@ let req = http.request({
             }
         });
 });
-
-req.write("text");
-req.end();
+req.write (text);
+req.end ();

@@ -15,12 +15,21 @@ const req = http.request({
         'ignore': 'header'
         }
     }, (res) => {
-        console.log (res.statusCode);
-        console.log (res.statusMessage);
-        util.compareHeaders({"content-type": "text/plain"}, res.headers);
+        let correct = true;
+        correct = correct & util.compareStatus(res, 200, "OK");
+        correct = correct & util.compareHeaders({"content-type": "text/plain"}, res.headers);
         res.on ('data', (data) => {
             if (data.toString().trim() !== text) {
                 console.error("Wrong message");
+            }
+            else
+            {
+                correct = false;
+            }
+        });
+        res.on("end", () => {
+            if (!correct) {
+                process.exit(1);
             }
         });
 });

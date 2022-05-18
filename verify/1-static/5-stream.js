@@ -8,10 +8,15 @@ http.get({
     agent: false,
     headers:{},
     }, (res) => {
-        console.log (res.statusCode);
-        console.log (res.statusMessage);
-        util.compareHeaders({"connection": "close", "content-type":"application/octet-stream"}, res.headers);
+        let correct = true;
+        correct = correct & util.compareStatus(res, 200, "OK");
+        correct = correct & util.compareHeaders({"connection": "close", "content-type":"application/octet-stream"}, res.headers);
         res.on ('data', (data) => {
-            util.compareFile (util.filename("/cloudy"), data);
-        })
+            correct = correct & util.compareFile (util.filename("/cloudy"), data);
+        });
+        res.on("end", () => {
+            if (!correct) {
+                process.exit(1);
+            }
+        });
 });

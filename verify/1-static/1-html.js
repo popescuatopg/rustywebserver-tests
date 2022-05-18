@@ -8,8 +8,15 @@ http.get({
     agent: false,
     headers:{},
     }, (res) => {
-        util.compareHeaders({"connection": "close", "content-type":"text/html; charset=utf-8"}, res.headers);
+        let correct = true;
+        correct = correct & util.compareStatus(res, 200, "OK");
+        correct = correct & util.compareHeaders({"connection": "close", "content-type":"text/html; charset=utf-8"}, res.headers);
         res.on("data", (data) => {
-            util.compareFile (util.filename("/page.html"), data);
+            correct = correct & util.compareFile (util.filename("/page.html"), data);
+        });
+        res.on("end", () => {
+            if (!correct) {
+                process.exit(1);
+            }
         });
 });

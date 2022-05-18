@@ -8,10 +8,21 @@ http.get({
     agent: false,
     headers:{},
     }, (res) => {
-        util.compareHeaders({"connection": "close"}, res.headers);
+        let correct = true;
+        correct = correct & util.compareStatus(res, 404, "Not Found");
+        correct = correct & util.compareHeaders({"connection": "close"}, res.headers);
         res.on ('data', (data) => {
-            if (data.toString().trim() !== "<html>403 Forbidden</html>") {
+            if (data.toString().trim() !== "<html>404 Not Found</html>") {
                 console.error("Wrong message");
             }
-        })
+            else
+            {
+                correct = false;
+            }
+        });
+        res.on("end", () => {
+            if (!correct) {
+                process.exit(1);
+            }
+        });
 });
