@@ -19,6 +19,7 @@ function run_single() {
     fi
     kill -9 $pid &> /dev/null
     rm -rf server.log
+    exit $success
 }
 
 if which rustywebserver &> /dev/null
