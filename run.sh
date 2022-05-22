@@ -34,9 +34,22 @@ then
             for folder in $(cd verify && find . -mindepth 1 -maxdepth 1 -type d | sort)
             do
                 echo $folder
-                for file in $(cd verify && find $folder -mindepth 1 -maxdepth 2 -type f -name '*.js')
+                for file in $(cd verify && find $folder -mindepth 1 -maxdepth 2 -type f -name '*.js' | sort)
                 do
                     run_single $file "verify/$(dirname $file)/$(basename $file .js).log"
+                    # echo file $(basename $folder)/$(basename $file)
+                    # run_test $(basename $folder)/$(basename $file)
+                done
+            done
+            ;;
+        print)
+            for folder in $(cd verify && find . -mindepth 1 -maxdepth 1 -type d | sort)
+            do
+                echo $folder
+                for file in $(cd verify && find $folder -mindepth 1 -maxdepth 2 -type f -name '*.js' | sort)
+                do
+                    echo "cd rustywebserver-tests && ./run.sh single $(dirname $file)/$(basename $file)"
+                    # run_single $file "verify/$(dirname $file)/$(basename $file .js).log"
                     # echo file $(basename $folder)/$(basename $file)
                     # run_test $(basename $folder)/$(basename $file)
                 done
