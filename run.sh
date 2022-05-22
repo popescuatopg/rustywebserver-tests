@@ -16,10 +16,50 @@ function run_single() {
     then
         outputreference="verify/$(dirname $1)/$(basename $1 .js).log"
         diff <(tail -n +2 "$output") <(tail -n +2 "$outputreference")
+        if [ $? -ne 0 ];
+        then
+            success=1
+        fi
     fi
     kill -9 $pid &> /dev/null
     rm -rf server.log
-    exit $success
+    return $success
+}
+
+function run_folder() {
+    output=$2
+    if [ -z $2 ] 
+    then
+        output=server.log
+    fi
+    rustywebserver 8000 ./public > "$output" &
+    pid=$!
+    echo "Server running PID $pid"
+    echo "Running folder $1"
+    success=0
+    for file in $(cd verify && find $1 -mindepth 1 -maxdepth 2 -type f -name '*.js' | sort)
+    do
+        echo "Running file $file"
+        timeout -s 9 10 node "verify/$file"
+        if [ $? -ne 0 ];
+        then
+            success=1
+        fi
+        # echo file $(basename $folder)/$(basename $file)
+        # run_test $(basename $folder)/$(basename $file)
+    done
+    if [ -z $2 ] 
+    then
+        outputreference="verify/$1.log"
+        diff <(tail -n +2 "$output") <(tail -n +2 "$outputreference")
+        if [ $? -ne 0 ];
+        then
+            success=1
+        fi
+    fi
+    kill -9 $pid &> /dev/null
+    rm -rf server.log
+    return $success
 }
 
 if which rustywebserver &> /dev/null
@@ -41,7 +81,11 @@ then
                     # echo file $(basename $folder)/$(basename $file)
                     # run_test $(basename $folder)/$(basename $file)
                 done
+                run_folder $folder "verify/$folder.log"
             done
+            ;;
+        folder)
+            run_folder $2
             ;;
         print)
             for folder in $(cd verify && find . -mindepth 1 -maxdepth 1 -type d | sort)

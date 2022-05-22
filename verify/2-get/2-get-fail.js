@@ -12,7 +12,7 @@ http.get({
     },
     }, (res) => {
         let correct = true;
-        correct = correct & util.compareStatus(res, 200, "OK");
+        correct = correct & util.compareStatus(res, 500, "Internal Server Error");
         correct = correct & util.compareHeaders({"connection": "close"}, res.headers);
         res.on ('data', (data) => {
             if (data.toString().trim() !== "<html>500 Internal Server Error</html>") {

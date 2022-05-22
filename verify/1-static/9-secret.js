@@ -12,7 +12,7 @@ http.get({
         correct = correct & util.compareStatus(res, 403, "Forbidden");
         correct = correct & util.compareHeaders({"connection": "close"}, res.headers);
         res.on ('data', (data) => {
-            if (data.toString().trim() !== "<html>403 Not Found</html>") {
+            if (data.toString().trim() !== "<html>403 Forbidden</html>") {
                 console.error("Wrong message");
             }
             else
