@@ -66,9 +66,11 @@ if which rustywebserver &> /dev/null
 then
     chmod 000 public/forbidden.html
 
+    success=0
     case $1 in
         single)
             run_single $2
+            success=$?
             ;;
         
         outputs)
@@ -86,6 +88,7 @@ then
             ;;
         folder)
             run_folder $2
+            success=$?
             ;;
         print)
             for folder in $(cd verify && find . -mindepth 1 -maxdepth 1 -type d | sort)
@@ -102,7 +105,8 @@ then
             ;;
     esac
 
-    chmod 644 public/forbidden.html    
+    chmod 644 public/forbidden.html
+    exit $success    
 else
     exit 1
 fi
