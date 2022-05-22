@@ -12,6 +12,12 @@ function run_single() {
     echo "Running script $1"
     timeout -s 9 10 node verify/$1
     success=$?
+    if [ $success -eq 0 ];
+    then
+        echo " -> success"
+    else
+        echo " -> failed"
+    fi
     if [ -z $2 ] 
     then
         outputreference="verify/$(dirname $1)/$(basename $1 .js).log"
@@ -43,7 +49,10 @@ function run_folder() {
         timeout -s 9 10 node "verify/$file"
         if [ $? -ne 0 ];
         then
+            echo " -> failed"
             success=1
+        else 
+            echo " -> success"
         fi
         # echo file $(basename $folder)/$(basename $file)
         # run_test $(basename $folder)/$(basename $file)

@@ -16,9 +16,6 @@ http.get({
         res.on ('data', (data) => {
             if (data.toString().trim() !== "Packet received") {
                 console.error("Wrong message");
-            }
-            else
-            {
                 correct = false;
             }
         });
