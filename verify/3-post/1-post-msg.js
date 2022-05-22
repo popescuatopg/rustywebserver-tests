@@ -21,9 +21,6 @@ const req = http.request({
         res.on ('data', (data) => {
             if (data.toString().trim() !== text) {
                 console.error("Wrong message");
-            }
-            else
-            {
                 correct = false;
             }
         });

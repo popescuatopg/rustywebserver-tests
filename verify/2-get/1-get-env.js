@@ -17,9 +17,6 @@ http.get({
         res.on ('data', (data) => {
             if (data.toString().trim() !== "Message super message received from a super student") {
                 console.error("Wrong message");
-            }
-            else
-            {
                 correct = false;
             }
         });

@@ -20,9 +20,6 @@ const req = http.request({
         res.on ('data', (data) => {
             if (data.toString().trim() !== "Query_subject=server\nsuper cool message") {
                 console.error("Wrong message");
-            }
-            else
-            {
                 correct = false;
             }
         });

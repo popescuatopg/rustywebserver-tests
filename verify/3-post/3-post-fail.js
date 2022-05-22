@@ -20,9 +20,6 @@ const req = http.request({
         res.on ('data', (data) => {
             if (data.toString().trim() !== "<html>500 Internal Server Error</html>") {
                 console.error("Wrong message");
-            }
-            else
-            {
                 correct = false;
             }
         });

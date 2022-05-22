@@ -14,9 +14,6 @@ http.get({
         res.on ('data', (data) => {
             if (data.toString().trim() !== "<html>404 Not Found</html>") {
                 console.error("Wrong message");
-            }
-            else
-            {
                 correct = false;
             }
         });

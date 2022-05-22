@@ -14,9 +14,6 @@ http.get({
         res.on ('data', (data) => {
             if (data.toString().trim().split(/\r?\n/).sort().join("\n") !== "Query_subject=server\nQuery_value=this+is+a+text") {
                 console.error("Wrong message");
-            }
-            else
-            {
                 correct = false;
             }
         });

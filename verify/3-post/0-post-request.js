@@ -16,9 +16,6 @@ let req = http.request({
         res.on ('data', (data) => {
             if (data.toString().trim() !== "POST") {
                 console.error("Wrong message");
-            }
-            else
-            {
                 correct = false;
             }
         });
