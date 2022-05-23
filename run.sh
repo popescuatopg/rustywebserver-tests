@@ -21,7 +21,8 @@ function run_single() {
     if [ -z $2 ] 
     then
         outputreference="verify/$(dirname $1)/$(basename $1 .js).log"
-        diff <(tail -n +2 "$output") <(tail -n +2 "$outputreference")
+        echo -e "Your output 						      | Original output" 
+        diff --ignore-space-change --side-by-side --suppress-common-lines <(tail -n +2 "$output") <(tail -n +2 "$outputreference")
         if [ $? -ne 0 ];
         then
             success=1
@@ -60,7 +61,8 @@ function run_folder() {
     if [ -z $2 ] 
     then
         outputreference="verify/$1.log"
-        diff <(tail -n +2 "$output") <(tail -n +2 "$outputreference")
+        echo -e "Your output 						      | Original output" 
+        diff --ignore-space-change --side-by-side --suppress-common-lines <(tail -n +2 "$output") <(tail -n +2 "$outputreference")
         if [ $? -ne 0 ];
         then
             success=1
