@@ -3,7 +3,7 @@ const http = require ('http');
 const util = require("../util.js");
 
 let req = http.request({
-    hostname: 'localhost',
+    hostname: '127.0.0.1',
     port: 8000,
     path: '/scripts/print_method.sh',
     agent: false,

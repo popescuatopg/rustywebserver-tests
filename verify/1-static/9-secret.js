@@ -2,7 +2,7 @@ const http = require ('http');
 const util = require("./../util.js");
 
 http.get({
-    hostname: 'localhost',
+    hostname: '127.0.0.1',
     port: 8000,
     path: '/../verify/2-get/2-get-fail.js',
     agent: false,

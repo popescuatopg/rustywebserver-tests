@@ -4,7 +4,7 @@ const util = require("../util.js");
 const text = 'super cool message';
 
 const req = http.request({
-    hostname: 'localhost',
+    hostname: '127.0.0.1',
     port: 8000,
     path: '/scripts/print_post.sh',
     agent: false,

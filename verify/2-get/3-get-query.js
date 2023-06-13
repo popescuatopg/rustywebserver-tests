@@ -2,7 +2,7 @@ const http = require ('http');
 const util = require("./../util.js");
 
 http.get({
-    hostname: 'localhost',
+    hostname: '127.0.0.1',
     port: 8000,
     path: '/scripts/print_query_string.sh?subject=server&value=this+is+a+text',
     agent: false,

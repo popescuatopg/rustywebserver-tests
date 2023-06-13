@@ -2,7 +2,7 @@ const http = require ('http');
 const util = require("./../util.js");
 
 http.get({
-    hostname: 'localhost',
+    hostname: '127.0.0.1',
     port: 8000,
     path: '/summertime.png',
     agent: false,
