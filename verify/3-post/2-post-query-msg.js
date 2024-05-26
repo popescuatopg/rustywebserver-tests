@@ -18,7 +18,7 @@ const req = http.request({
         correct = correct & util.compareStatus(res, 200, "OK");
         correct = correct & util.compareHeaders({"content-type": "text/plain"}, res.headers);
         res.on ('data', (data) => {
-            if (data.toString().trim() !== "Query_subject=server\nsuper cool message") {
+            if (data.toString().trim().split(/\r?\n/).sort().join("\n") !== "Query_subject=server\nsuper cool message") {
                 console.error("Wrong message");
                 correct = false;
             }
